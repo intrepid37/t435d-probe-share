@@ -1,7 +1,52 @@
-<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>T435D Probe Copier</title><style>body{font-family:sans-serif;max-width:900px;margin:20px auto;padding:0 12px}button{font-size:22px;padding:16px 22px;margin:12px 0}textarea{width:100%;height:240px;font-family:monospace;font-size:14px}#status{font-weight:bold;margin:12px 0}</style><h1>T435D read-only probe copier</h1><p>Press the button on the TCL, then paste the copied URL into your re-entry flow.</p><button id="copy">Copy probe URL to clipboard</button><div id="status"></div><textarea id="url"></textarea><script>
-const props=["ro.build.type","ro.secure","ro.adb.secure","ro.debuggable","sys.usb.config","persist.service.adb.enable","service.adb.root"];
-const ph="<meta name=viewport content='width=device-width,initial-scale=1'><pre id=o>Reading localhost:2929...</pre><script>p="+JSON.stringify(props)+";Promise.all(p.map(k=>fetch('http://127.0.0.1:2929',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'name=query&api=get_sys_property&key='+encodeURIComponent(k)}).then(r=>r.text()).then(v=>k+'\\n'+v))).then(x=>o.textContent=x.join('\\n\\n')).catch(e=>o.textContent='ERROR '+e)<\/script>";
-const dataUrl='data:text/html,'+encodeURIComponent(ph);
-url.value=dataUrl;
-copy.onclick=async()=>{url.focus();url.select();try{await navigator.clipboard.writeText(dataUrl);status.textContent='Copied to clipboard.'}catch(e){document.execCommand('copy');status.textContent='Copied using fallback.'}}
-</script>
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Project Elisha TCL Launcher</title>
+<style>
+body{font-family:sans-serif;margin:10px;background:#fff;color:#111}
+h1{font-size:22px}
+h2{font-size:19px;margin-top:20px}
+a.big,button{display:block;box-sizing:border-box;width:100%;padding:15px 8px;margin:10px 0;font:bold 18px sans-serif;text-align:center}
+.note{border:1px solid #777;padding:8px;white-space:pre-wrap}
+form{margin:0}
+</style>
+<h1>Project Elisha — TCL Flip 3 launcher</h1>
+<p class="note">No clipboard or pasted code needed. These are normal links and read-only property queries.</p>
+
+<h2>1. Proven internal pages</h2>
+<a class="big" href="http://engmode.localhost/rootUserMode.html">Open Root/User Mode</a>
+<a class="big" href="http://engmode.localhost/index.html#setting">Open Engmode settings</a>
+<p class="note">If Root/User Mode opens, do not press Root2User/User2Root yet. In Engmode settings, look for “adb & dev Tools”; report what it shows before changing it.</p>
+
+<h2>2. Read-only actual-phone properties</h2>
+<p>Each button asks the phone's local TCL engineering service for one property. Use Back to return here after each result.</p>
+
+<form method="post" action="http://127.0.0.1:2929">
+<input type="hidden" name="name" value="query"><input type="hidden" name="api" value="get_sys_property"><input type="hidden" name="key" value="ro.build.type">
+<button type="submit">Read ro.build.type</button></form>
+
+<form method="post" action="http://127.0.0.1:2929">
+<input type="hidden" name="name" value="query"><input type="hidden" name="api" value="get_sys_property"><input type="hidden" name="key" value="ro.secure">
+<button type="submit">Read ro.secure</button></form>
+
+<form method="post" action="http://127.0.0.1:2929">
+<input type="hidden" name="name" value="query"><input type="hidden" name="api" value="get_sys_property"><input type="hidden" name="key" value="ro.adb.secure">
+<button type="submit">Read ro.adb.secure</button></form>
+
+<form method="post" action="http://127.0.0.1:2929">
+<input type="hidden" name="name" value="query"><input type="hidden" name="api" value="get_sys_property"><input type="hidden" name="key" value="ro.debuggable">
+<button type="submit">Read ro.debuggable</button></form>
+
+<form method="post" action="http://127.0.0.1:2929">
+<input type="hidden" name="name" value="query"><input type="hidden" name="api" value="get_sys_property"><input type="hidden" name="key" value="sys.usb.config">
+<button type="submit">Read sys.usb.config</button></form>
+
+<form method="post" action="http://127.0.0.1:2929">
+<input type="hidden" name="name" value="query"><input type="hidden" name="api" value="get_sys_property"><input type="hidden" name="key" value="persist.service.adb.enable">
+<button type="submit">Read persist.service.adb.enable</button></form>
+
+<form method="post" action="http://127.0.0.1:2929">
+<input type="hidden" name="name" value="query"><input type="hidden" name="api" value="get_sys_property"><input type="hidden" name="key" value="service.adb.root">
+<button type="submit">Read service.adb.root</button></form>
+
+<p class="note">Nothing on this page flashes the phone or writes these properties.</p>
